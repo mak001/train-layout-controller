@@ -7,6 +7,7 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
     "i2c-bus": "^5.2.3",
     "serialport": "^13.0.0"
   },
