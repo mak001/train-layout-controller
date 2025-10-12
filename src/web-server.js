@@ -1,9 +1,10 @@
 const http = require('http');
-const fs = require('fs'); // For serving static files
+const fs = require('fs');
 const path = require('path');
 
+const { PORT } = process.env;
+
 const hostname = '127.0.0.1';
-const port = 3000;
 
 const server = http.createServer((req, res) => {
   if (req.url === '/') {
@@ -25,6 +26,6 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(PORT, hostname, () => {
+  console.log(`Server running at http://${hostname}:${PORT}/`);
 });
