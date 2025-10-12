@@ -2,7 +2,7 @@
   "name": "train-controller",
   "version": "0.1",
   "scripts": {
-    "serve": "node src/web-server.js",
+    "serve": "node src/index.js",
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
