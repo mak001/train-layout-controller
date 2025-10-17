@@ -50,10 +50,17 @@ export default class Command {
   }
 
   /**
-     * @returns {string} The dcc-ex command sting in html format
-     */
+    * @returns {string} The dcc-ex command sting in html format
+    */
   get htmlCommand() {
     const commandString = Command.getCommandString(this.#command, this.#vars);
     return `&lt;${commandString}&gt;`;
+  }
+
+  /**
+    * @returns {string} A string representation of the command
+    */
+  get toString() {
+    return this.constructor.name + ': ' + Command.getCommandString(this.#command, this.#vars);
   }
 }
