@@ -43,28 +43,9 @@ class RotateTurntableCommand extends Command {
  */
 class RotateExTurntableCommand extends Command {
   /**
-   * Turntable activities
-   * @enum {number}
-   * @readonly
-   * @static
-   */
-  static ACTIVITIES = Object.freeze({
-    TURN: 0,
-    TURN_PINVERT: 1,
-    HOME: 2,
-    CALIBRATE: 3,
-    LED_ON: 4,
-    LED_SLOW: 5,
-    LED_FAST: 6,
-    LED_OFF: 7,
-    ACC_ON: 8,
-    ACC_OFF: 9,
-  });
-
-  /**
-   * @param {strin|number} id The id of the turntable
+   * @param {string|number} id The id of the turntable
    * @param {string|number} position The position to rotate to
-   * @param {RotateExTurntableCommand.ACTIVITIES} activity The activity to perform
+   * @param {import("../../enums").ACTIVITIES} activity The activity to perform
    */
   constructor(id, position, activity) {
     super('I', id, position, activity);

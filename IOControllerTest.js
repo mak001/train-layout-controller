@@ -1,4 +1,4 @@
-import IOController from './IOController';
+import IOController from './src/controller/IOController';
 
 const controller = new IOController({
   serial: {

@@ -19,21 +19,10 @@ class TrainInfoCommand extends Command {
  */
 class SetTrainSpeedCommand extends Command {
   /**
-     * The direction a train should travel
-     * @enum {number}
-     * @static
-     * @readonly
-     */
-  static DIRECTION = Object.freeze({
-    REVERSE: 0,
-    FORWARD: 1,
-  });
-
-  /**
-     * @param {string|number} cab The train to set speed for
-     * @param {int} speed The speed to set the train (0 to 127, or -1 for emergency stop)
-     * @param {SetTrainSpeedCommand.DIRECTION} direction The direction the train should go
-     */
+   * @param {string|number} cab The train to set speed for
+   * @param {int} speed The speed to set the train (0 to 127, or -1 for emergency stop)
+   * @param {import("../../enums.js").DIRECTION} direction The direction the train should go
+   */
   constructor(cab, speed, direction) {
     const clampedSpeed = Math.clamp(speed, -1, 127);
     super('t', cab, clampedSpeed, direction);
@@ -56,20 +45,10 @@ class EmergenyStopCommand extends Command {
  */
 class TrainFunctionCommand extends Command {
   /**
-     * @enum {number}
-     * @static
-     * @readonly
-     */
-  static STATE = Object.freeze({
-    OFF: 0,
-    ON: 1,
-  });
-
-  /**
-     * @param {string|number} cab The train to set the function state for
-     * @param {number} funct The function to set (must be between 0 and 68, inclusive)
-     * @param {TrainFunctionCommand.STATE} state The state to set the function
-     */
+   * @param {string|number} cab The train to set the function state for
+   * @param {number} funct The function to set (must be between 0 and 68, inclusive)
+   * @param {import("../../enums.js").STATE} state The state to set the function
+   */
   constructor(cab, funct, state) {
     if (funct < 0 || 68 < funct) {
       throw new Error(`function number is out of range (${funct})`);
@@ -84,8 +63,8 @@ class TrainFunctionCommand extends Command {
  */
 class RemoveTrainReminder extends Command {
   /**
-     * @param {string|number} [cab] The train to forget. If no train is passed it will forget all trains.
-     */
+   * @param {string|number} [cab] The train to forget. If no train is passed it will forget all trains.
+   */
   constructor(cab) {
     super('-', cab);
   }
