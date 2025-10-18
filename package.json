@@ -1,16 +1,19 @@
 {
   "name": "train-controller",
   "version": "0.1",
+  "type": "module",
   "scripts": {
     "serve": "node src/index.js",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "test": "vitest"
+    "test": "vitest",
+    "controller-test": "vite-node IOControllerTest.js"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
     "i2c-bus": "^5.2.3",
-    "serialport": "^13.0.0"
+    "serialport": "^13.0.0",
+    "vite-node": "^3.2.4"
   },
   "devDependencies": {
     "@eslint/css": "^0.13.0",
