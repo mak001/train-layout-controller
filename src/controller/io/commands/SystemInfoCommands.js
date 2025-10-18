@@ -30,7 +30,7 @@ class RequestMaxLocosCommand extends Command {
   }
 }
 
-export default {
+export {
   RequestCurrentOnTrackCommand,
   RequestSystemInfoCommand,
   RequestMaxLocosCommand,

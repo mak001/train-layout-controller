@@ -18,6 +18,6 @@ class RequestAutomationCommand extends Command {
 // https://dcc-ex.com/exrail/getting-started.html
 // https://dcc-ex.com/exrail/exrail-command-reference.html
 
-export default {
+export {
   RequestAutomationCommand,
 };

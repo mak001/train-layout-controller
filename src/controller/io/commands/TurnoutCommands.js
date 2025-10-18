@@ -46,7 +46,7 @@ class ListTurnoutsCommand extends Command {
   }
 }
 
-export default {
+export {
   RequestTurnoutListCommand,
   ThrowTurnoutCommand,
   TurnoutStatusCommand,

@@ -88,7 +88,7 @@ class TraverserAllPositionCommand extends Command {
   }
 }
 
-export default {
+export {
   ListTraversersCommand,
   TraverserPositionCommand,
   RotateTurntableCommand,

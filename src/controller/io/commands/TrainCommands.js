@@ -24,8 +24,12 @@ class SetTrainSpeedCommand extends Command {
    * @param {import("../../enums.js").DIRECTION} direction The direction the train should go
    */
   constructor(cab, speed, direction) {
-    const clampedSpeed = Math.clamp(speed, -1, 127);
+    const clampedSpeed = SetTrainSpeedCommand.clamp(speed, -1, 127);
     super('t', cab, clampedSpeed, direction);
+  }
+
+  static clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
   }
 }
 
@@ -70,7 +74,7 @@ class RemoveTrainReminder extends Command {
   }
 }
 
-export default {
+export {
   TrainInfoCommand,
   SetTrainSpeedCommand,
   EmergenyStopCommand,

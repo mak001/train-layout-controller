@@ -57,12 +57,13 @@ export default class IOController {
    * @returns {Promise<void>} Resolves when the command has been sent
    */
   async sendCommand(command) {
+    console.log('Sending command:', command.toString());
     this.commandHistory.push(command);
-    this.#serialPort.write(command.nativeCommand(), (err) => {
+    this.#serialPort.write(command.nativeCommand, (err) => {
       if (err) {
         return console.error('Error on write: ', err.message, command.toString());
       }
-      console.log('Command sent: ', command.toString());
+      console.log('Command sent: ', command.nativeCommand);
     });
   }
 }

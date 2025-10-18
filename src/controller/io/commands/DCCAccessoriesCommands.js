@@ -42,7 +42,7 @@ class SetAccessoryAspectCommand extends Command {
   }
 }
 
-export default {
+export {
   ControlAccessoryCommand,
   SetAccessoryAspectCommand,
 };

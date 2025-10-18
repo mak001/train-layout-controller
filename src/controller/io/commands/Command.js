@@ -34,9 +34,9 @@ export default class Command {
     * @param  {...any} vars The variables of the command
     * @returns The command string without formatting
     */
-  static getCommandString(command, ...vars) {
+  static getCommandString(command, vars) {
     if (vars.length) {
-      return `${command} ${vars.concat(' ')}`;
+      return `${command} ${vars.join(' ')}`;
     }
     return command;
   }
@@ -60,7 +60,7 @@ export default class Command {
   /**
     * @returns {string} A string representation of the command
     */
-  get toString() {
+  toString() {
     return this.constructor.name + ': ' + Command.getCommandString(this.#command, this.#vars);
   }
 }
