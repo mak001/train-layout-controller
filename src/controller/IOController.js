@@ -1,7 +1,7 @@
 import LimitedArray from './io/LimitedArray';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
-import TrackPowerHandler from './io/responseHandlers.js/TrackPowerHandler';
+import TrackPowerHandler from './io/responseHandlers/TrackPowerHandler';
 
 export default class IOController {
   #options;
