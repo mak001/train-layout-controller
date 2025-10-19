@@ -1,11 +1,13 @@
 import IOController from './src/controller/IOController';
 import { SetTrainSpeedCommand } from './src/controller/io/commands/TrainCommands';
-import { DIRECTION } from './src/controller/enums';
+import TrackPowerCommand from 'src/controller/io/commands/TrackPowerCommand';
+import { DIRECTION, STATE, TRACK } from './src/controller/enums';
 const timers = require('timers/promises');
+const { SERIAL_PORT, STARTING_TRACK_POWER } = process.env;
 
 const controller = new IOController({
   serial: {
-    port: process.env.SERIAL_PORT || '/dev/ttyUSB0',
+    port: SERIAL_PORT || '/dev/ttyUSB0',
     baudRate: 115200,
   },
   commandHistorySize: 50,
@@ -13,6 +15,29 @@ const controller = new IOController({
 });
 
 await timers.setTimeout(10000);
+
+if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.JOIN, STATE.ON),
+  );
+} else if (STARTING_TRACK_POWER.toLowerCase() === 'off') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.ALL, STATE.OFF),
+  );
+} else if (STARTING_TRACK_POWER.toLowerCase() === 'prog') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.PROG, STATE.ON),
+  );
+} else if (STARTING_TRACK_POWER.toLowerCase() === 'all') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.ALL, STATE.ON),
+  );
+} else { // main only
+   controller.sendCommand(
+    new TrackPowerCommand(TRACK.MAIN, STATE.ON),
+  );
+}
+
 controller.sendCommand(
   new SetTrainSpeedCommand(4022, 30, DIRECTION.FORWARD),
 );
