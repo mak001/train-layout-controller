@@ -1,5 +1,3 @@
-
-
 export default class Train {
   #id;
   #name;
@@ -13,8 +11,8 @@ export default class Train {
    * @typedef {Object} TrainOptions
    * @property {number} id - Unique identifier for the train
    * @property {string} name - Name of the train
-   * 
-   * @param {TrainOptions} options 
+   *
+   * @param {TrainOptions} options
    */
   constructor(options, port) {
     this.options = options || {};
@@ -93,8 +91,8 @@ export default class Train {
   }
 
   /**
-   * 
-   * @param {number} speed 
+   *
+   * @param {number} speed
    */
   updateSpeedAndDirection(speedAndDirection) {
     if (speedAndDirection < 0 || speedAndDirection > 255) {
@@ -102,9 +100,9 @@ export default class Train {
     }
     this.#direction = speedAndDirection >= 130 ? 1 : 0;
     this.#emergencyStop = speedAndDirection === 1 || speedAndDirection === 129;
-    this.#speed = this.#direction === 1 ? 
-      speedAndDirection - 1 :
-      speedAndDirection - 129;
+    this.#speed = this.#direction === 1
+      ? speedAndDirection - 1
+      : speedAndDirection - 129;
   }
 
   /**

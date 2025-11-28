@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import globals from 'globals';
-import pluginVue from 'eslint-plugin-vue';
+// import pluginVue from 'eslint-plugin-vue';
 import markdown from '@eslint/markdown';
 import css from '@eslint/css';
 import { defineConfig } from 'eslint/config';
@@ -119,7 +119,7 @@ export default defineConfig([
       '@stylistic/yield-star-spacing': ['error', { after: true, before: false }],
     },
   },
-  pluginVue.configs['flat/essential'],
+  // pluginVue.configs['flat/essential'],
   { files: ['**/*.md'], plugins: { markdown }, language: 'markdown/gfm', extends: ['markdown/recommended'] },
   { files: ['**/*.css'], plugins: { css }, language: 'css/css', extends: ['css/recommended'] },
 ]);

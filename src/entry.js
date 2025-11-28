@@ -1,4 +1,4 @@
-import WebServer from './web/server';
+import WebServer from './web/server/WebServer';
 import IOController from './controller/IOController';
 import TrackPowerCommand from './controller/io/commands/TrackPowerCommand';
 import { STATE, TRACK } from './controller/enums';

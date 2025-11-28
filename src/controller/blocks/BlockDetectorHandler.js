@@ -10,13 +10,13 @@ export default class BlockDetectorHandler {
    * @typedef {Object} Block
    * @property {number} address - I2C address of the block detector
    * @property {string} name - Name of the block detector
-   * 
+   *
    * @typedef {Object} BlockDetectorHandlerOptions
    * @property {number} [busNumber] - I2C bus number (default: 1)
    * @property {number} [intervalTime] - Interval time in milliseconds for polling (default: 100)
    * @property {Block[]} blocks
-   * 
-   * @param {BlockDetectorHandlerOptions} options 
+   *
+   * @param {BlockDetectorHandlerOptions} options
    */
   constructor(options) {
     this.options = options || {};
@@ -29,7 +29,7 @@ export default class BlockDetectorHandler {
   async init() {
     const busNumber = this.options.busNumber || 1;
     this.#i2cBus = await i2c.openPromisified(busNumber);
-    this.options.blocks.forEach(block => {
+    this.options.blocks.forEach((block) => {
       this.#blocks.push(new BlockDetector(this.#i2cBus, block.address, block.name));
     });
   }
@@ -37,7 +37,7 @@ export default class BlockDetectorHandler {
   /**
    * Polls all block detectors to update their status
    */
-  async run () {
+  async run() {
     if (!this.#i2cBus) {
       throw new Error('I2C bus is not open. Call init() first.');
     }
@@ -64,8 +64,8 @@ export default class BlockDetectorHandler {
 
   /**
    * Checks if a block is occupied by its address or name
-   * 
-   * @param {number|string} addressOrName 
+   *
+   * @param {number|string} addressOrName
    * @returns {boolean} True if the block is occupied, false otherwise
    */
   isBockOccupied(addressOrName) {
@@ -79,7 +79,7 @@ export default class BlockDetectorHandler {
 
   /**
    * Gets the list of block detectors
-   * 
+   *
    * @returns {BlockDetector[]} The list of block detectors
    */
   get blocks() {

@@ -8,6 +8,4 @@ export default class Programmer {
     this.#serialPort = serialPort;
     serialPort.write('<R>');
   }
-
-
 }

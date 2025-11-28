@@ -11,13 +11,13 @@ export default class TrainHandler {
    * @typedef {Object} Train
    * @property {number} id - Unique identifier for the train
    * @property {string} name - Name of the train
-   * 
+   *
    * @typedef {Object} TrainHandlerOptions
    * @property {Train[]} trains
    * @property {number} [baudRate] - Baud rate for serial communication (default: 9600)
    * @property {string} port - Serial port path for the controller
-   * 
-   * @param {TrainHandlerOptions} options 
+   *
+   * @param {TrainHandlerOptions} options
    */
   constructor(options) {
     this.options = options || {};
@@ -28,7 +28,7 @@ export default class TrainHandler {
       baudRate: this.baudRate,
     });
 
-    this.options.trains.forEach(train => {
+    this.options.trains.forEach((train) => {
       this.#trains.push(new Train(train, this.#serialPort));
     });
 
