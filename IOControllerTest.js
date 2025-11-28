@@ -17,27 +17,27 @@ const controller = new IOController({
 await timers.setTimeout(10000);
 
 if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
-  controller.sendCommand(
+  await controller.sendCommand(
     new TrackPowerCommand(TRACK.JOIN, STATE.ON),
   );
 } else if (STARTING_TRACK_POWER.toLowerCase() === 'off') {
-  controller.sendCommand(
+  await controller.sendCommand(
     new TrackPowerCommand(TRACK.ALL, STATE.OFF),
   );
 } else if (STARTING_TRACK_POWER.toLowerCase() === 'prog') {
-  controller.sendCommand(
+  await controller.sendCommand(
     new TrackPowerCommand(TRACK.PROG, STATE.ON),
   );
 } else if (STARTING_TRACK_POWER.toLowerCase() === 'all') {
-  controller.sendCommand(
+  await controller.sendCommand(
     new TrackPowerCommand(TRACK.ALL, STATE.ON),
   );
 } else { // main only
-  controller.sendCommand(
+  await controller.sendCommand(
     new TrackPowerCommand(TRACK.MAIN, STATE.ON),
   );
 }
 
-controller.sendCommand(
+await controller.sendCommand(
   new SetTrainSpeedCommand(4022, 30, DIRECTION.FORWARD),
 );

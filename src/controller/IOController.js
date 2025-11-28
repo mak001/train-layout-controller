@@ -12,6 +12,8 @@ export default class IOController {
   #readyResolve;
   #ready = false;
 
+  #commandPromiseResolves = new Map();
+
   constructor(options = {}) {
     this.#readyPromise = new Promise((resolve) => {
       this.#readyResolve = resolve;
@@ -58,6 +60,14 @@ export default class IOController {
       this.#readyResolve();
     }
 
+    for (const [command, resolve] of this.#commandPromiseResolves) {
+      if (command.shouldHandleResponse(trimmedResponse)) {
+        console.log(command.formatResponse(trimmedResponse));
+        resolve(command.formatResponse(trimmedResponse));
+        this.#commandPromiseResolves.delete(command);
+      }
+    }
+
     for (const Handler of this.handlers) {
       if (Handler.shouldHandle(trimmedResponse)) {
         console.log(`Handling response with ${Handler.name}`);
@@ -74,11 +84,16 @@ export default class IOController {
   async sendCommand(command) {
     console.log('Sending command:', command.toString());
     this.commandHistory.push(command);
+    const promise = new Promise((resolve) => {
+      this.#commandPromiseResolves.set(command, resolve);
+    });
+
     this.#serialPort.write(command.nativeCommand, (err) => {
       if (err) {
         return console.error('Error on write: ', err.message, command.toString());
       }
       console.log('Command sent: ', command.nativeCommand);
     });
+    return promise;
   }
 }

@@ -30,6 +30,24 @@ export default class Command {
   }
 
   /**
+   * Determines if the command should handle the response
+   * @param {string} response The response from the serial port
+   * @returns {boolean} True if the command should handle the response
+   */
+  // eslint-disable-next-line no-unused-vars
+  shouldHandleResponse(response) {
+    return false;
+  }
+
+  /**
+   * @param {string} response The response from the serial port
+   * @returns {Object} a json formatted response
+   */
+  formatResponse(response) {
+    return { response };
+  }
+
+  /**
     * @param {string} command The command
     * @param  {...any} vars The variables of the command
     * @returns The command string without formatting
