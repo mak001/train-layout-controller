@@ -6,6 +6,7 @@ import { STATE, TRACK } from './controller/enums';
 const { SERIAL_PORT, STARTING_TRACK_POWER, BAUD_RATE } = process.env;
 
 const server = new WebServer();
+/*
 const controller = new IOController({
   serial: {
     port: SERIAL_PORT || '/dev/ttyUSB0',
@@ -38,5 +39,5 @@ if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
     new TrackPowerCommand(TRACK.MAIN, STATE.ON),
   );
 }
-
+*/
 server.start();
