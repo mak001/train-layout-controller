@@ -2,11 +2,12 @@ import http from 'http';
 import fs from 'fs';
 import path from 'path';
 
-import { default as apiHandler } from '../server/index.js';
+import { default as apiHandler } from './api/index';
 
 const PORT = process.env.PORT || 3000;
 
 const routes = [
+  // TODO - possibly re-do html, css, & js file handling
   {
     path: /^\/(|index.*)$/,
     file: 'index.html',
@@ -23,7 +24,8 @@ const routes = [
     contentType: 'application/javascript',
   },
   {
-    path: /^\/api\/(.+)$/,
+    path: /^\/api(\/(.*))*$/,
+    contentType: 'application/json',
     handler: apiHandler,
   },
 ];
@@ -46,32 +48,36 @@ export default class WebServer {
   handleRequest(req, res) {
     const { url } = req;
     for (const route of routes) {
-      if (route.path) {
-        const match = url.match(route.path);
+      if (!route.path) {
+        continue;
+      }
+      const match = url.match(route.path);
 
-        if (!match) {
-          continue;
-        }
+      if (!match) {
+        continue;
+      }
 
-        if (route.handler && typeof route.handler === 'function') {
-          route.handler(req, res);
-          return;
-        }
+      if (route.contentType) {
+        res.setHeader('Content-Type', route.contentType);
+      }
 
-        if (route.file && route.contentType) {
-          fs.readFile(path.resolve(__dirname, `./front-end/${route.file}`), (err, data) => {
-            if (err) {
-              res.statusCode = 500;
-              res.setHeader('Content-Type', 'text/plain');
-              res.end('Internal Server Error ... ' + err);
-              return;
-            }
-            res.statusCode = 200;
-            res.setHeader('Content-Type', route.contentType);
-            res.end(data);
-          });
-          return;
-        }
+      if (route.handler && typeof route.handler === 'function') {
+        route.handler(req, res);
+        return;
+      }
+
+      if (route.file && route.contentType) {
+        fs.readFile(path.resolve(__dirname, `../front-end/${route.file}`), (err, data) => {
+          if (err) {
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'text/plain');
+            res.end('Internal Server Error ... ' + err);
+            return;
+          }
+          res.statusCode = 200;
+          res.end(data);
+        });
+        return;
       }
     }
     res.statusCode = 404;
