@@ -1,30 +1,42 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
+import WebServer from './web/server';
+import IOController from './controller/IOController';
+import TrackPowerCommand from './controller/io/commands/TrackPowerCommand';
+import { STATE, TRACK } from './controller/enums';
 
-const PORT = process.env.PORT || 3000;
+const { SERIAL_PORT, STARTING_TRACK_POWER, BAUD_RATE } = process.env;
 
-const server = http.createServer((req, res) => {
-  if (req.url === '/') {
-    fs.readFile(path.resolve(__dirname, './web/index.html'), (err, data) => {
-      if (err) {
-        res.statusCode = 500;
-        res.setHeader('Content-Type', 'text/plain');
-        res.end('Internal Server Error ... ' + err);
-        return;
-      }
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/html');
-      res.end(data);
-    });
-  } else {
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Not Found');
-  }
+const server = new WebServer();
+const controller = new IOController({
+  serial: {
+    port: SERIAL_PORT || '/dev/ttyUSB0',
+    baudRate: BAUD_RATE || 115200,
+  },
+  commandHistorySize: 50,
+  responseHistorySize: 50,
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}/`);
-});
+await controller.isReady();
+
+if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.JOIN, STATE.ON),
+  );
+} else if (STARTING_TRACK_POWER.toLowerCase() === 'off') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.ALL, STATE.OFF),
+  );
+} else if (STARTING_TRACK_POWER.toLowerCase() === 'prog') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.PROG, STATE.ON),
+  );
+} else if (STARTING_TRACK_POWER.toLowerCase() === 'all') {
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.ALL, STATE.ON),
+  );
+} else { // main only
+  controller.sendCommand(
+    new TrackPowerCommand(TRACK.MAIN, STATE.ON),
+  );
+}
+
+server.start();

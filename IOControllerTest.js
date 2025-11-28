@@ -33,7 +33,7 @@ if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
     new TrackPowerCommand(TRACK.ALL, STATE.ON),
   );
 } else { // main only
-   controller.sendCommand(
+  controller.sendCommand(
     new TrackPowerCommand(TRACK.MAIN, STATE.ON),
   );
 }
