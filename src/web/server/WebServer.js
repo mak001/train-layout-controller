@@ -1,7 +1,8 @@
 import path from 'path';
 import express from 'express';
 
-import trainRouter from './api/trainsRouter.js';
+import powerRouter from './api/powerRouter';
+import trainRouter from './api/trainsRouter';
 
 const PORT = process.env.PORT || 3000;
 const baseApiPath = '/api';
@@ -24,6 +25,7 @@ export default class WebServer {
     this.#server.use(express.static(path.resolve(__dirname, '../front-end')));
 
     this.#server.use(`${baseApiPath}/trains`, trainRouter);
+    this.#server.use(`${baseApiPath}/power`, powerRouter);
     this.#server.use(baseApiPath, (req, res) => {
       res.status(404);
       res.json({ message: 'unknown api endpoint' });

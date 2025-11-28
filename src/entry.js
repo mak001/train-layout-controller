@@ -2,9 +2,11 @@ import WebServer from './web/server/WebServer';
 import IOController from './controller/IOController';
 import TrackPowerCommand from './controller/io/commands/TrackPowerCommand';
 import { STATE, TRACK } from './controller/enums';
+import DataStore from './DataStore';
 
 const { SERIAL_PORT, STARTING_TRACK_POWER, BAUD_RATE } = process.env;
 
+DataStore.store; // Initialize the global store
 const server = new WebServer();
 
 const controller = new IOController({
