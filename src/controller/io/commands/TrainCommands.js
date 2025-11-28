@@ -21,7 +21,7 @@ class SetTrainSpeedCommand extends Command {
   /**
    * @param {string|number} cab The train to set speed for
    * @param {int} speed The speed to set the train (0 to 127, or -1 for emergency stop)
-   * @param {import("../../enums.js").DIRECTION} direction The direction the train should go
+   * @param {import("train-controller/enums").DIRECTION} direction The direction the train should go
    */
   constructor(cab, speed, direction) {
     const clampedSpeed = SetTrainSpeedCommand.clamp(speed, -1, 127);
@@ -51,7 +51,7 @@ class TrainFunctionCommand extends Command {
   /**
    * @param {string|number} cab The train to set the function state for
    * @param {number} funct The function to set (must be between 0 and 68, inclusive)
-   * @param {import("../../enums.js").STATE} state The state to set the function
+   * @param {import("train-controller/enums").STATE} state The state to set the function
    */
   constructor(cab, funct, state) {
     if (funct < 0 || 68 < funct) {

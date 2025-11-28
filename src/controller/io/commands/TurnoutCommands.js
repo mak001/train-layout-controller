@@ -16,7 +16,7 @@ class RequestTurnoutListCommand extends Command {
 class ThrowTurnoutCommand extends Command {
   /**
    * @param {number|string} id The id of the turnout
-   * @param {import("../../enums.js").TURNOUT_STATE} state The state to set the turnout to
+   * @param {import("train-controller/enums").TURNOUT_STATE} state The state to set the turnout to
    */
   constructor(id, state) {
     super('T', id, state);

@@ -1,8 +1,8 @@
 import path from 'path';
 import express from 'express';
 
-import powerRouter from './api/powerRouter';
-import trainRouter from './api/trainsRouter';
+import powerRouter from 'train-controller/server/api/powerRouter';
+import trainRouter from 'train-controller/server/api/trainsRouter';
 
 const PORT = process.env.PORT || 3000;
 const baseApiPath = '/api';
@@ -23,6 +23,7 @@ export default class WebServer {
 
   setUpRoutes() {
     this.#server.use(express.static(path.resolve(__dirname, '../front-end')));
+    this.#server.use(express.json());
 
     this.#server.use(`${baseApiPath}/trains`, trainRouter);
     this.#server.use(`${baseApiPath}/power`, powerRouter);

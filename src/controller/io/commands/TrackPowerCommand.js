@@ -1,5 +1,5 @@
 import Command from './Command';
-import { STATE, TRACK } from '../../enums.js';
+import { STATE, TRACK } from 'train-controller/enums';
 
 /**
  * A command to turn on or off the power to tracks

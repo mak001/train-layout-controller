@@ -8,7 +8,7 @@ import Command from './Command';
 class ControlAccessoryCommand extends Command {
   /**
    * @param {number} address The address of the accessory to control. for linear addresses 1-2044, for address and sub address cobo 0-511
-   * @param {import("../../enums.js").STATE} state The state to set the accessory to
+   * @param {import("train-controller/enums.js").STATE} state The state to set the accessory to
    * @param {number} [subAddress] The sub address of the accessory to control. A number 0-3 for address and sub address combo, or null/undefined for linear addresses
    */
   constructor(address, state, subAddress) {

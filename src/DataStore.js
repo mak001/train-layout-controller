@@ -1,25 +1,30 @@
 import { produce } from 'immer';
-import { STATE, TRACK } from './controller/enums';
-
-const baseState = {
-  power: {
-    [TRACK.MAIN]: STATE.OFF,
-    [TRACK.PROG]: STATE.OFF,
-    [TRACK.JOIN]: false,
-  },
-};
+import { STATE, TRACK } from 'train-controller/enums';
 
 export default class DataStore {
-  static dataStore = null;
+  static #controller;
 
-  static get store() {
-    if (!DataStore.dataStore) {
-      DataStore.dataStore = baseState;
+  static store = {
+    power: {
+      [TRACK.MAIN]: STATE.OFF,
+      [TRACK.PROG]: STATE.OFF,
+      [TRACK.JOIN]: false,
+    },
+  };
+
+  get controller() {
+    return DataStore.#controller;
+  }
+
+  set controller(controllerInstance) {
+    if (!DataStore.#controller) {
+      DataStore.#controller = controllerInstance;
+    } else {
+      console.error('cannot re-set controller once set');
     }
-    return DataStore.dataStore;
   }
 
   static update(draftUpdate) {
-    DataStore.dataStore = produce(DataStore.dataStore, draftUpdate);
+    DataStore.store = produce(DataStore.store, draftUpdate);
   }
 }

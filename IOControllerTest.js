@@ -1,7 +1,7 @@
-import IOController from './src/controller/IOController';
-import { SetTrainSpeedCommand } from './src/controller/io/commands/TrainCommands';
-import TrackPowerCommand from 'src/controller/io/commands/TrackPowerCommand';
-import { DIRECTION, STATE, TRACK } from './src/controller/enums';
+import IOController from 'train-controller/controller/IOController';
+import { SetTrainSpeedCommand } from 'train-controller/controller/io/commands/TrainCommands';
+import TrackPowerCommand from 'train-controller/controller/io/commands/TrackPowerCommand';
+import { DIRECTION, STATE, TRACK } from 'train-controller/enums';
 const timers = require('timers/promises');
 const { SERIAL_PORT, STARTING_TRACK_POWER } = process.env;
 

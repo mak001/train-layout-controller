@@ -45,7 +45,7 @@ class RotateExTurntableCommand extends Command {
   /**
    * @param {string|number} id The id of the turntable
    * @param {string|number} position The position to rotate to
-   * @param {import("../../enums").ACTIVITIES} activity The activity to perform
+   * @param {import("train-controller/enums").ACTIVITIES} activity The activity to perform
    */
   constructor(id, position, activity) {
     super('I', id, position, activity);

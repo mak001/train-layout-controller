@@ -1,14 +1,12 @@
-import WebServer from './web/server/WebServer';
-import IOController from './controller/IOController';
-import TrackPowerCommand from './controller/io/commands/TrackPowerCommand';
-import { STATE, TRACK } from './controller/enums';
-import DataStore from './DataStore';
+import WebServer from 'train-controller/server/WebServer';
+import IOController from 'train-controller/controller/IOController';
+import TrackPowerCommand from 'train-controller/controller/io/commands/TrackPowerCommand';
+import { STATE, TRACK } from 'train-controller/enums';
+import DataStore from 'train-controller/DataStore';
 
 const { SERIAL_PORT, STARTING_TRACK_POWER, BAUD_RATE } = process.env;
 
-DataStore.store; // Initialize the global store
 const server = new WebServer();
-
 const controller = new IOController({
   serial: {
     port: SERIAL_PORT || '/dev/ttyUSB0',
@@ -17,6 +15,8 @@ const controller = new IOController({
   commandHistorySize: 50,
   responseHistorySize: 50,
 });
+
+DataStore.controller = controller;
 
 await controller.isReady();
 

@@ -1,6 +1,6 @@
 import ResponseHandler from './ResponseHandler';
-import { TRACK, STATE } from '../../enums';
-import DataStore from '../../../DataStore';
+import { TRACK, STATE } from 'train-controller/enums';
+import DataStore from 'train-controller/DataStore';
 /**
  * Handler for track power responses.
  */
