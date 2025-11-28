@@ -8,8 +8,14 @@ export default class IOController {
   #serialPort;
   #parser;
   #handlers;
+  #readyPromise;
+  #readyResolve;
+  #ready = false;
 
   constructor(options = {}) {
+    this.#readyPromise = new Promise((resolve) => {
+      this.#readyResolve = resolve;
+    });
     this.#options = options;
     this.commandHistory = new LimitedArray(options.commandHistorySize || 1000);
     this.responseHistory = new LimitedArray(options.responseHistorySize || 1000);
@@ -28,6 +34,10 @@ export default class IOController {
     this.#parser.on('data', this.handleResponse.bind(this));
   }
 
+  isReady() {
+    return this.#readyPromise;
+  }
+
   isValidResponse(response) {
     return response.length > 0 && response.startsWith('<') && response.endsWith('>');
   }
@@ -43,6 +53,11 @@ export default class IOController {
     console.log('Received response:', response);
 
     const trimmedResponse = response.replace('<', '').replace('>', '').trim();
+    if (!this.#ready && trimmedResponse[0] === 'p') {
+      this.#ready = true;
+      this.#readyResolve();
+    }
+
     for (const Handler of this.handlers) {
       if (Handler.shouldHandle(trimmedResponse)) {
         console.log(`Handling response with ${Handler.name}`);
