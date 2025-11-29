@@ -2,6 +2,7 @@ import LimitedArray from './io/LimitedArray';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import TrackPowerHandler from './io/responseHandlers/TrackPowerHandler';
+import DataStore from 'src/DataStore.js';
 
 export default class IOController {
   #options;
@@ -62,8 +63,9 @@ export default class IOController {
 
     for (const [command, resolve] of this.#commandPromiseResolves) {
       if (command.shouldHandleResponse(trimmedResponse)) {
-        console.log(command.formatResponse(trimmedResponse));
-        resolve(command.formatResponse(trimmedResponse));
+        const formatedResponse = command.formatResponse(trimmedResponse);
+        console.log(formatedResponse);
+        resolve(formatedResponse);
         this.#commandPromiseResolves.delete(command);
       }
     }

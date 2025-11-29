@@ -43,3 +43,4 @@ if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
 }
 
 server.start();
+DataStore.wsServer = server.wsServer;

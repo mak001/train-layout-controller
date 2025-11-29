@@ -1,42 +1,92 @@
 import path from 'path';
 import express from 'express';
+import { createServer } from 'http';
+import { WebSocketServer } from 'ws';
 
-import powerRouter from 'train-controller/server/api/powerRouter';
-import trainRouter from 'train-controller/server/api/trainsRouter';
-import turnoutRouter from 'train-controller/server/api/turnoutRouter';
+import DataStore from 'train-controller/DataStore';
 
 const PORT = process.env.PORT || 3000;
-const baseApiPath = '/api';
 
 export default class WebServer {
+  #expressServer;
+  #wsServer;
   #server;
 
+  #wsClients;
+
   constructor() {
-    this.#server = express();
-    this.setUpRoutes();
+    this.#wsClients = new Set();
+    this.#expressServer = express();
+    this.#server = createServer(this.#expressServer);
+
+    this.#expressServer.use(express.static(path.resolve(__dirname, '../front-end')));
+    this.#expressServer.use((req, res) => {
+      res.status(404);
+      res.sendFile(path.resolve(__dirname, '../front-end/404.html'));
+    });
+  }
+
+  get wsServer() {
+    return this.#wsServer;
   }
 
   start() {
     this.#server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}/`);
+      console.log(`WebSocket server running on port ${PORT}/`);
+    });
+
+    this.#wsServer = new WebSocketServer({ server: this.#server, clientTracking: true });
+    this.#wsServer.on('connection', (wsClient, request) => {
+      const clientIp = request.socket.remoteAddress;
+      console.log(`New WebSocket connection established from ${clientIp}`);
+      this.#wsClients.add(wsClient);
+      wsClient.isAlive = true;
+      wsClient.send(DataStore.store);
+
+      wsClient.on('message', (message) => {
+        console.log(`Received message from ${clientIp}: ${message}`);
+      });
+
+      wsClient.on('close', () => {
+        console.log(`WebSocket connection from ${clientIp} closed`);
+      });
+
+      wsClient.on('error', (error) => {
+        console.error(`WebSocket error from ${clientIp}:`, error);
+      });
+
+      wsClient.on('pong', () => {
+        wsClient.isAlive = true;
+      });
+
+      wsClient.on('close', () => {
+        this.#wsClients.delete(wsClient);
+      });
+    });
+
+    const interval = setInterval(function ping() {
+      this.#wsServer.clients.forEach(function each(ws) {
+        if (ws.isAlive === false) {
+          return ws.terminate();
+        }
+
+        ws.isAlive = false;
+
+        ws.ping();
+      });
+    }, 30000);
+
+    this.#wsServer.on('close', function close() {
+      clearInterval(interval);
     });
   }
 
-  setUpRoutes() {
-    this.#server.use(express.static(path.resolve(__dirname, '../front-end')));
-    this.#server.use(express.json());
-
-    this.#server.use(`${baseApiPath}/power`, powerRouter);
-    this.#server.use(`${baseApiPath}/trains`, trainRouter);
-    this.#server.use(`${baseApiPath}/turnouts`, turnoutRouter);
-    this.#server.use(baseApiPath, (req, res) => {
-      res.status(404);
-      res.json({ message: 'unknown api endpoint' });
-    });
-
-    this.#server.use((req, res) => {
-      res.status(404);
-      res.sendFile(path.resolve(__dirname, '../front-end/404.html'));
+  broadcast(data) {
+    const message = JSON.stringify(data);
+    this.#wsClients.forEach((client) => {
+      if (client.readyState === client.OPEN) {
+        client.send(message);
+      }
     });
   }
 }

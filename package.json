@@ -10,12 +10,14 @@
     "controller-test": "vite-node IOControllerTest.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "i2c-bus": "^5.2.3",
     "immer": "^11.0.1",
     "serialport": "^13.0.0",
-    "vite-node": "^3.2.4"
+    "vite-node": "^3.2.4",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
     "@eslint/css": "^0.13.0",
