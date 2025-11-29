@@ -3,7 +3,7 @@ import { STATE, TRACK } from 'train-controller/enums';
 
 export default class DataStore {
   static #controller;
-  static #wsServer;
+  static #server;
 
   static store = {
     power: {
@@ -25,22 +25,23 @@ export default class DataStore {
     }
   }
 
-  static get wsServer() {
-    return DataStore.#wsServer;
+  static get server() {
+    return DataStore.#server;
   }
 
-  static set wsServer(wsServerInstance) {
-    if (!DataStore.#wsServer) {
-      DataStore.#wsServer = wsServerInstance;
+  static set server(serverInstance) {
+    if (!DataStore.#server) {
+      DataStore.#server = serverInstance;
     } else {
-      console.error('cannot re-set wsServer once set');
+      console.error('cannot re-set server once set');
     }
   }
 
   static update(draftUpdate) {
     DataStore.store = produce(DataStore.store, draftUpdate);
-    if (DataStore.#wsServer) {
-      DataStore.#wsServer.broadcast(JSON.stringify(DataStore.store));
+    if (DataStore.#server) {
+      const draft = produce({}, draftUpdate);
+      DataStore.#server.broadcast(draft);
     }
   }
 }

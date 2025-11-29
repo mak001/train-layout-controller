@@ -5,6 +5,7 @@ ws.onopen = () => {
 };
 
 ws.onmessage = (event) => {
+  console.log(event.data);
   const data = JSON.parse(event.data);
   console.log('Received data:', data);
   // TODO - update based on recieved data

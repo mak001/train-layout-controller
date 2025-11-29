@@ -17,6 +17,7 @@ const controller = new IOController({
 });
 
 DataStore.controller = controller;
+DataStore.server = server;
 
 await controller.isReady();
 
@@ -43,4 +44,3 @@ if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
 }
 
 server.start();
-DataStore.wsServer = server.wsServer;

@@ -41,7 +41,7 @@ export default class WebServer {
       console.log(`New WebSocket connection established from ${clientIp}`);
       this.#wsClients.add(wsClient);
       wsClient.isAlive = true;
-      wsClient.send(DataStore.store);
+      wsClient.send(JSON.stringify(DataStore.store));
 
       wsClient.on('message', (message) => {
         console.log(`Received message from ${clientIp}: ${message}`);
@@ -64,25 +64,34 @@ export default class WebServer {
       });
     });
 
-    const interval = setInterval(function ping() {
-      this.#wsServer.clients.forEach(function each(ws) {
+    const interval = setInterval(() => {
+      this.#wsServer.clients.forEach((ws) => {
         if (ws.isAlive === false) {
           return ws.terminate();
         }
 
         ws.isAlive = false;
-
         ws.ping();
       });
     }, 30000);
 
-    this.#wsServer.on('close', function close() {
+    this.#wsServer.on('close', () => {
       clearInterval(interval);
     });
   }
 
   broadcast(data) {
-    const message = JSON.stringify(data);
+    let message = data;
+
+    if (typeof message === 'object' && message !== null) {
+      message = JSON.stringify(message);
+    }
+
+    if (typeof message !== 'string') {
+      console.error('WebServer.broadcast: data must be string or object');
+      return;
+    }
+
     this.#wsClients.forEach((client) => {
       if (client.readyState === client.OPEN) {
         client.send(message);
