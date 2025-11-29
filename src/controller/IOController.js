@@ -22,8 +22,8 @@ export default class IOController {
     this.commandHistory = new LimitedArray(options.commandHistorySize || 1000);
     this.responseHistory = new LimitedArray(options.responseHistorySize || 1000);
 
-    this.handlers = options.responseHandlers || [];
-    this.handlers.push(
+    this.#handlers = options.responseHandlers || [];
+    this.#handlers.push(
       TrackPowerHandler,
     );
 
@@ -68,7 +68,7 @@ export default class IOController {
       }
     }
 
-    for (const Handler of this.handlers) {
+    for (const Handler of this.#handlers) {
       if (Handler.shouldHandle(trimmedResponse)) {
         console.log(`Handling response with ${Handler.name}`);
         Handler.handle(trimmedResponse);

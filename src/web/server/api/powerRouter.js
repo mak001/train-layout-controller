@@ -1,7 +1,8 @@
 import express from 'express';
+
 import DataStore from 'train-controller/DataStore';
-import TrackPowerCommand from 'train-controller/controller/io/commands/TrackPowerCommand';
 import { TRACK, STATE } from 'train-controller/enums';
+import TrackPowerCommand from 'train-controller/controller/io/commands/TrackPowerCommand';
 
 const router = express.Router();
 
