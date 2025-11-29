@@ -1,3 +1,39 @@
 body {
-  background-color: gray;
+  background-color: #666;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  min-height: 100vw;
+}
+
+.menu-bar {
+  background: #222;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.menu-bar .uk-svg {
+  transform: translate(0, 0) scale(1.5);
+  margin-top: 8px;
+}
+
+.uk-h1,
+.uk-h2,
+.uk-h3,
+.uk-h4,
+.uk-h5,
+.uk-h6,
+.uk-heading-2xlarge,
+.uk-heading-3xlarge,
+.uk-heading-large,
+.uk-heading-medium,
+.uk-heading-small,
+.uk-heading-xlarge,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #222;
 }

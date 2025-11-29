@@ -2,11 +2,33 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.24.2/dist/css/uikit.min.css" />
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-  <div>TODO</div>
+  <ul class="uk-iconnav menu-bar uk-padding-small uk-flex-center" uk-switcher>
+    <li><a href="#trains" class="uk-icon-image" uk-icon="ratio: 1.5" title="Trains"><img
+          src="images/train-svgrepo-com.svg" uk-svg></a></li>
+    <li><a href="#turnouts" uk-icon="icon: git-branch; ratio: 1.5" title="Turnouts"></a></li>
+    <li><a href="#power" uk-icon="icon: cog; ratio: 1.5" title="Power"></a></li>
+  </ul>
+  <div class="uk-switcher">
+    <div id="trains-screen" class="uk-padding">
+      <h2 class="uk-text-center">Trains</h2>
+      <p>Train controls and status will appear here.</p>
+    </div>
+    <div id="turnouts-screen" class="uk-padding">
+      <h2 class="uk-text-center">Turnouts</h2>
+      <p>Turnout controls and status will appear here.</p>
+    </div>
+    <div id="power-screen" class="uk-padding">
+      <h2 class="uk-text-center">Power</h2>
+      <p>Power controls and status will appear here.</p>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.24.2/dist/js/uikit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.24.2/dist/js/uikit-icons.min.js"></script>
   <script src="script.js"></script>
 </body>
 
