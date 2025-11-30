@@ -4,6 +4,7 @@ import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 
 import DataStore from 'train-controller/DataStore';
+import PowerHandler from 'train-controller/server/messageHandlers/PowerHandler';
 
 const PORT = process.env.PORT || 3000;
 
@@ -13,6 +14,9 @@ export default class WebServer {
   #server;
 
   #wsClients;
+  #messageHandlers = [
+    PowerHandler,
+  ];
 
   constructor() {
     this.#wsClients = new Set();
@@ -45,6 +49,13 @@ export default class WebServer {
 
       wsClient.on('message', (message) => {
         console.log(`Received message from ${clientIp}: ${message}`);
+        const data = JSON.parse(message);
+
+        for (const handler of this.#messageHandlers) {
+          if (handler.shouldHandle(data)) {
+            handler.handleMessage(data);
+          }
+        }
       });
 
       wsClient.on('close', () => {
