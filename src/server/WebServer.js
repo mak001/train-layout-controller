@@ -23,11 +23,8 @@ export default class WebServer {
     this.#expressServer = express();
     this.#server = createServer(this.#expressServer);
 
-    this.#expressServer.use(express.static(path.resolve(__dirname, '../front-end')));
-    this.#expressServer.use((req, res) => {
-      res.status(404);
-      res.sendFile(path.resolve(__dirname, '../front-end/404.html'));
-    });
+    this.#expressServer.use(express.static(path.resolve(__dirname, '../../front-end/dist')));
+    this.#expressServer.use((req, res) => res.sendFile(path.resolve(__dirname, '../../front-end/dist/index.html')));
   }
 
   get wsServer() {

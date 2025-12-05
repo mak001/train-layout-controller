@@ -1,4 +1,4 @@
-import { produce } from 'immer';
+import { produce, enablePatches } from 'immer';
 import { STATE, TRACK } from 'train-controller/enums';
 
 export default class DataStore {
@@ -38,10 +38,11 @@ export default class DataStore {
   }
 
   static update(draftUpdate) {
-    DataStore.store = produce(DataStore.store, draftUpdate);
-    if (DataStore.#server) {
-      const draft = produce({}, draftUpdate);
-      DataStore.#server.broadcast(draft);
-    }
+    enablePatches();
+    DataStore.store = produce(DataStore.store, draftUpdate, (patches, inversePatches) => {
+      if (DataStore.#server) {
+        DataStore.#server.broadcast({ patches, inversePatches });
+      }
+    });
   }
 }
