@@ -1,0 +1,3 @@
+<template>
+  Turnout View
+</template>

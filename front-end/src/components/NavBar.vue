@@ -2,9 +2,9 @@
   <nav class="navbar">
     <div class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" href="/trains">Trains</a>
-        <a class="navbar-item" href="/turnouts">Turnouts</a>
-        <a class="navbar-item" href="/power">Power</a>
+        <RouterLink to="/trains">Trains</RouterLink>
+        <RouterLink to="/turnouts">Turnouts</RouterLink>
+        <RouterLink to="/power">Power</RouterLink>
       </div>
     </div>
   </nav>

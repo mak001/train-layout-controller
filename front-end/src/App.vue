@@ -1,7 +1,10 @@
 <template>
-  <div id="app">
+  <nav>
     <NavBar />
-  </div>
+  </nav>
+  <main>
+    <RouterView />
+  </main>
 </template>
 
 <script>
@@ -13,6 +16,7 @@ export default {
   },
 };
 </script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

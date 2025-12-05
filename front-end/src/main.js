@@ -1,7 +1,9 @@
+import { enablePatches } from 'immer';
 import { createApp } from 'vue';
+
 import App from './App.vue';
 import store from './store';
-import { enablePatches } from 'immer';
+import router from './views/router';
 
 enablePatches();
 
@@ -34,4 +36,5 @@ const startWebSocket = (delay = 1000) => {
 startWebSocket();
 createApp(App)
   .use(store)
+  .use(router)
   .mount('#app');
