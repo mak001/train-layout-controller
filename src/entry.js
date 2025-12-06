@@ -45,8 +45,9 @@ if (STARTING_TRACK_POWER.toLowerCase() === 'join') {
 
 server.start();
 
+import {SetTrainSpeedCommand} from 'train-controller/controller/io/commands/TrainCommands';
 setInterval(() => {
   controller.sendCommand(
-    new TrackPowerCommand(TRACK.ALL, STATE.ON),
+    new SetTrainSpeedCommand('4022', 80, 1),
   );
 }, 10000);

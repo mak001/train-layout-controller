@@ -13,7 +13,7 @@ onMounted(() => {
 watch(() => store.layoutState.power, (newVal) => {
   mainPowerToggle.value = newVal.MAIN == 1;
   progPowerToggle.value = newVal.PROG == 1;
-}, { deep: true });
+});
 
 const updatePowerState = (rail, event) => {
   if (event.detail === 'skip-dispatch') return;

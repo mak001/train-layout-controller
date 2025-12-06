@@ -11,6 +11,7 @@ export default class DataStore {
       [TRACK.PROG]: STATE.OFF,
       [TRACK.JOIN]: false,
     },
+    cabs: {},
   };
 
   get controller() {

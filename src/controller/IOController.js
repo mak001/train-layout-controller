@@ -2,10 +2,9 @@ import LimitedArray from './io/LimitedArray';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import TrackPowerHandler from './io/responseHandlers/TrackPowerHandler';
-import DataStore from 'src/DataStore.js';
+import TrainHandler from './io/responseHandlers/TrainHandler';
 
 export default class IOController {
-  #options;
   #serialPort;
   #parser;
   #handlers;
@@ -19,13 +18,13 @@ export default class IOController {
     this.#readyPromise = new Promise((resolve) => {
       this.#readyResolve = resolve;
     });
-    this.#options = options;
     this.commandHistory = new LimitedArray(options.commandHistorySize || 1000);
     this.responseHistory = new LimitedArray(options.responseHistorySize || 1000);
 
     this.#handlers = options.responseHandlers || [];
     this.#handlers.push(
       TrackPowerHandler,
+      TrainHandler,
     );
 
     this.#serialPort = new SerialPort({
@@ -86,16 +85,28 @@ export default class IOController {
   async sendCommand(command) {
     console.log('Sending command:', command.toString());
     this.commandHistory.push(command);
-    const promise = new Promise((resolve) => {
-      this.#commandPromiseResolves.set(command, resolve);
-    });
+    if (Object.prototype.hasOwnProperty.call(command, 'shouldHandleResponse')) {
+      const promise = new Promise((resolve) => {
+        this.#commandPromiseResolves.set(command, resolve);
+      });
 
+      this._writeCommand(command);
+      return promise;
+    } else {
+      return new Promise((resolve) => {
+        this._writeCommand(command);
+        resolve();
+      });
+    }
+  }
+
+  _writeCommand(command) {
     this.#serialPort.write(command.nativeCommand, (err) => {
       if (err) {
-        return console.error('Error on write: ', err.message, command.toString());
+        console.error('Error on write: ', err.message, command.toString());
+      } else {
+        console.log('Command sent: ', command.toString());
       }
-      console.log('Command sent: ', command.nativeCommand);
     });
-    return promise;
   }
 }

@@ -5,6 +5,7 @@ import { WebSocketServer } from 'ws';
 
 import DataStore from 'train-controller/DataStore';
 import PowerHandler from 'train-controller/server/messageHandlers/PowerHandler';
+import TrainHandler from 'train-controller/server/messageHandlers/TrainHandler';
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,6 +17,7 @@ export default class WebServer {
   #wsClients;
   #messageHandlers = [
     PowerHandler,
+    TrainHandler,
   ];
 
   constructor() {

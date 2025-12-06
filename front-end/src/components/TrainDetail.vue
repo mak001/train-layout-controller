@@ -1,5 +1,6 @@
 <script setup>
 import { store } from '../store.js';
+import CabControls from './CabControls.vue';
 
 import { ref } from 'vue';
 
@@ -14,7 +15,6 @@ const props = defineProps({
 const address = ref(props.trainId === 'new' ? props.address : props.trainId);
 const addressLock = ref(address.value !== '' && props.trainId !== 'new');
 
-import { defineEmits } from 'vue';
 const emit = defineEmits(['unlocked', 'updateNewDetail']);
 
 const onTrainLockChange = () => {
@@ -37,8 +37,16 @@ const onTrainLockChange = () => {
       :disabled="address === ''"
     />
   </div>
-  <div class="train-controls" v-if="address !=='' && addressLock">
-    <!-- Additional train controls can be added here -->
-     TRAIN
-  </div>
+  <template v-if="address !=='' && addressLock" >
+    <CabControls class="train-controls" :address="address" />
+  </template>
 </template>
+
+<style scoped>
+  .train-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+</style>
