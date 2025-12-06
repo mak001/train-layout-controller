@@ -37,9 +37,9 @@ const onTrainLockChange = () => {
       :disabled="address === ''"
     />
   </div>
-  <template v-if="address !=='' && addressLock" >
-    <CabControls class="train-controls" :address="address" />
-  </template>
+  <div  class="train-controls">
+    <CabControls :address="address" v-if="address !=='' && addressLock"/>
+  </div>
 </template>
 
 <style scoped>

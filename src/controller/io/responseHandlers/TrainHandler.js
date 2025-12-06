@@ -17,7 +17,7 @@ export default class TrainHandler extends ResponseHandler {
     const { speed, direction } = TrainHandler.getSpeedAndDirection(speedByte);
     return DataStore.update((draft) => {
       if (!draft.cabs) {
-        draft.cabs = [];
+        draft.cabs = {};
       }
 
       if (!draft.cabs[cabId]) {
@@ -37,19 +37,19 @@ export default class TrainHandler extends ResponseHandler {
 
   static getSpeedAndDirection(speed) {
     if (speed === 0 || speed === 1) {
-      return { speed: 0, direction: DIRECTION.FORWARD };
-    }
-
-    if (speed === 128 || speed === 129) {
       return { speed: 0, direction: DIRECTION.REVERSE };
     }
 
+    if (speed === 128 || speed === 129) {
+      return { speed: 0, direction: DIRECTION.FORWARD };
+    }
+
     if (2 <= speed && speed <= 127) {
-      return { speed: speed - 1, direction: DIRECTION.FORWARD };
+      return { speed: speed - 1, direction: DIRECTION.REVERSE };
     }
 
     if (130 <= speed && speed <= 255) {
-      return { speed: speed - 129, direction: DIRECTION.REVERSE };
+      return { speed: speed - 129, direction: DIRECTION.FORWARD };
     }
     return {};
   }
