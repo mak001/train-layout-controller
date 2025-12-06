@@ -1,30 +1,32 @@
+
 <script setup>
 import { store } from '../store.js';
+import TrainDetail from '../components/TrainDetail.vue';
+import { ref } from 'vue';
 
-import Tabs from 'primevue/tabs';
-import TabList from 'primevue/tablist';
-import Tab from 'primevue/tab';
-import TabPanels from 'primevue/tabpanels';
-import TabPanel from 'primevue/tabpanel';
-import TrainDetails from '../components/TrainDetails.vue';
+const newTrainDetail = ref({ address: '' });
+
+function handleUnlocked(detail) {
+  newTrainDetail.value = detail;
+}
 </script>
 
 <template>
-  <Tabs value="0" scrollable>
-    <TabList>
-      <Tab v-for="train in store.state.trains" :key="train.id" :value="train.id">
-        {{ train.name }}
-      </Tab>
-    </TabList>
-    <TabPanels v-if="store.state.trains.length">
-      <TabPanel v-for="train in store.state.trains" :key="train.id" :value="train.id">
-        <TrainDetails :trainId="train.id" />
-      </TabPanel>
-    </TabPanels>
-    <TabPanels v-else>
-      <TabPanel value="0">
-        <TrainDetails :trainId="0" />
-      </TabPanel>
-    </TabPanels>
-  </Tabs>
+  <q-tabs v-model="store.state.currentTrainTab">
+    <template v-for="train in store.state.trains" :key="train">
+      <q-tab :name="train" :label="train" />
+    </template>
+    <q-tab name="new" label="New" />
+  </q-tabs>
+
+  <q-tab-panels v-model="store.state.currentTrainTab">
+    <template v-for="train in store.state.trains" :key="train">
+      <q-tab-panel :name="train">
+        <TrainDetail :trainId="train" @unlocked="handleUnlocked" />
+      </q-tab-panel>
+    </template>
+    <q-tab-panel name="new">
+      <TrainDetail :trainId="'new'" :address="newTrainDetail.address" />
+    </q-tab-panel>
+  </q-tab-panels>
 </template>

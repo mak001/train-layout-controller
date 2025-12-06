@@ -1,7 +1,7 @@
 import { enablePatches } from 'immer';
-import PrimeVue from 'primevue/config';
-import Aura from '@primeuix/themes/aura';
+import { Quasar } from 'quasar';
 import { createApp } from 'vue';
+import 'quasar/src/css/index.sass';
 
 import App from './App.vue';
 import { store } from './store';
@@ -42,11 +42,7 @@ window.disconnect = () => {
 
 startWebSocket();
 createApp(App)
-  .use(PrimeVue, {
-    theme: {
-      preset: Aura,
-    },
-  })
+  .use(Quasar)
   .use(store)
   .use(router)
   .mount('#app');

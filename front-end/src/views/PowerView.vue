@@ -1,40 +1,28 @@
 <script setup>
 import { store } from '../store.js';
-import { useTemplateRef, watch, onMounted } from 'vue';
-import ToggleSwitch from 'primevue/toggleswitch';
+import { ref, watch, onMounted } from 'vue';
 
-const mainPowerSwitch = useTemplateRef('mainPowerSwitch');
-const progPowerSwitch = useTemplateRef('progPowerSwitch');
+const mainPowerToggle = ref(store.layoutState.power.MAIN);
+const progPowerToggle = ref(store.layoutState.power.PROG);
 
 onMounted(() => {
-  updateCheckboxState(mainPowerSwitch, store.layoutState.power.MAIN);
-  updateCheckboxState(progPowerSwitch, store.layoutState.power.PROG);
+  mainPowerToggle.value = store.layoutState.power.MAIN;
+  progPowerToggle.value = store.layoutState.power.PROG;
 });
 
 watch(() => store.layoutState.power, (newVal) => {
-  updateCheckboxState(mainPowerSwitch, newVal.MAIN);
-  updateCheckboxState(progPowerSwitch, newVal.PROG);
+  mainPowerToggle.value = newVal.MAIN == 1;
+  progPowerToggle.value = newVal.PROG == 1;
 }, { deep: true });
-
-const updateCheckboxState = (ref, state) => {
-  const childNodes = ref.value.$el.childNodes;
-  const inputNode = Array.from(childNodes).find(child => child.nodeName === 'INPUT');
-  if (inputNode) {
-    if (inputNode.checked != state) {
-      inputNode.checked = state == 1 ? true : false;
-      inputNode.dispatchEvent(new CustomEvent('change', { detail: 'skip-dispatch' }));
-    }
-  }
-};
 
 const updatePowerState = (rail, event) => {
   if (event.detail === 'skip-dispatch') return;
-  store.dispatch('setPowerState', { [rail]: event.target.checked ? 1 : 0 });
+  store.dispatch('setPowerState', { [rail]: event ? '1' : '0' });
 };
 </script>
 
 <template>
   <h2>Power Control</h2>
-  <ToggleSwitch :true-value="1" :false-value="0" @change="updatePowerState('MAIN', $event)" ref="mainPowerSwitch"/>
-  <ToggleSwitch :true-value="1" :false-value="0" @change="updatePowerState('PROG', $event)" ref="progPowerSwitch"/>
+  <q-toggle v-model="mainPowerToggle" label="Main Power" @update:model-value="updatePowerState('MAIN', $event)" />
+  <q-toggle v-model="progPowerToggle" label="Programming Power" @update:model-value="updatePowerState('PROG', $event)" />
 </template>

@@ -10,7 +10,8 @@ export const store = reactive({
   },
   state: {
     connected: false,
-    trains: [],
+    trains: new Set([]),
+    currentTrainTab: 'new',
   },
   _ws: null,
   updateLayoutState(data) {
@@ -25,6 +26,20 @@ export const store = reactive({
   updateConnectedStatus(status) {
     console.log('Updating connected status to:', status);
     this.state.connected = status;
+  },
+  getTrain(address) {
+    return this.state.trains.find(train => train.id === address);
+  },
+  addNewTrain(address) {
+    this.state.trains.add(address);
+    this.state.currentTrainTab = address;
+  },
+  removeTrain(trainId) {
+    console.log('removing train: ', trainId);
+    const removed = this.state.trains.delete(trainId);
+    if (removed && this.state.currentTrainTab === trainId) {
+      this.state.currentTrainTab = 'new';
+    }
   },
   dispatch(action, payload) {
     switch (action) {

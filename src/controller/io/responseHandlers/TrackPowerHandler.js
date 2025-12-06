@@ -24,8 +24,12 @@ export default class TrackPowerHandler extends ResponseHandler {
     }
 
     const track = Object.keys(TRACK).find(key => TRACK[key] === parts[1]);
+    const otherTrack = Object.keys(TRACK).filter(key => TRACK[key] !== parts[1]);
     return DataStore.update((draft) => {
       draft.power[track] = state;
+      for (const ot of otherTrack) {
+        draft.power[ot] = STATE.OFF;
+      }
     });
   }
 }

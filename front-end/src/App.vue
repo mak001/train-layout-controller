@@ -1,17 +1,11 @@
 <script setup>
 import { store } from './store.js';
 
-import ProgressSpinner from 'primevue/progressspinner';
 import NavBar from './components/NavBar.vue';
 </script>
 
 <template>
-  <div class="spinner-connecting" :class="{ shown: store.state.connected === false }">
-    <div>
-      <p>Connecting...</p>
-      <ProgressSpinner aria-label="connecting" />
-    </div>
-  </div>
+  <q-inner-loading label="Connecting..." :showing="store.state.connected === false" />
   <nav>
     <NavBar />
   </nav>
@@ -38,27 +32,7 @@ main {
   padding: 10px;
 }
 
-.spinner-connecting {
-  display: none;
-  background-color: rgba(0, 0, 0, 0.45);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.spinner-connecting.shown {
-  display: block;
-}
-
-.spinner-connecting > div {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 15px;
+.q-inner-loading {
+  z-index: 9999;
 }
 </style>
