@@ -1,8 +1,10 @@
 import { enablePatches } from 'immer';
+import PrimeVue from 'primevue/config';
+import Aura from '@primeuix/themes/aura';
 import { createApp } from 'vue';
 
 import App from './App.vue';
-import store from './store';
+import { store } from './store';
 import router from './views/router';
 
 enablePatches();
@@ -12,17 +14,18 @@ const startWebSocket = (delay = 1000) => {
 
   ws.onopen = () => {
     console.log('WebSocket connection established');
+    store.updateConnectedStatus(true);
+    store._ws = ws;
   };
 
   ws.onmessage = (event) => {
-    console.log(event.data);
     const data = JSON.parse(event.data);
-    console.log('Received data:', data);
-    store.updateState(data);
+    store.updateLayoutState(data);
   };
 
   ws.onclose = () => {
     console.log('WebSocket connection closed, attempting to reconnect...');
+    store.updateConnectedStatus(false);
     setTimeout(() => {
       startWebSocket(delay + 1000);
     }, delay);
@@ -33,8 +36,17 @@ const startWebSocket = (delay = 1000) => {
   };
 };
 
+window.disconnect = () => {
+  store.updateConnectedStatus(false);
+};
+
 startWebSocket();
 createApp(App)
+  .use(PrimeVue, {
+    theme: {
+      preset: Aura,
+    },
+  })
   .use(store)
   .use(router)
   .mount('#app');
