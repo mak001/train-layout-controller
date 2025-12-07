@@ -12,7 +12,7 @@ export default class TrainHandler extends ResponseHandler {
     const cabId = parts[0];
     // 1 is reg
     const speedByte = parseInt(parts[2], 10);
-    const functions = parseInt(parts[3], 10);
+    const functions = (parseInt(parts[3], 10) >>> 0).toString(2).padStart(29, '0').split('').reverse();
 
     const { speed, direction } = TrainHandler.getSpeedAndDirection(speedByte);
     return DataStore.update((draft) => {

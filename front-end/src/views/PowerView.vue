@@ -22,7 +22,9 @@ const updatePowerState = (rail, event) => {
 </script>
 
 <template>
-  <h2>Power Control</h2>
-  <q-toggle v-model="mainPowerToggle" label="Main Power" @update:model-value="updatePowerState('MAIN', $event)" />
-  <q-toggle v-model="progPowerToggle" label="Programming Power" @update:model-value="updatePowerState('PROG', $event)" />
+  <div>
+    <h2>Power Control</h2>
+    <q-toggle v-model="mainPowerToggle" label="Main Power" @update:model-value="updatePowerState('MAIN', $event)" />
+    <q-toggle v-model="progPowerToggle" label="Programming Power" @update:model-value="updatePowerState('PROG', $event)" />
+  </div>
 </template>

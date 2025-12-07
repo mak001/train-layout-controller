@@ -49,4 +49,18 @@ const onTrainLockChange = () => {
     gap: 20px;
     margin-top: 20px;
   }
+
+  .address-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .address-control > * {
+    flex-grow: 0;
+  }
+
+  .address-control > :first-child {
+    flex-grow: 1;
+  }
 </style>
